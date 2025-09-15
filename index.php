@@ -1,6 +1,6 @@
-<?php 
-include "funciones.php";
-
+<?php
+include 'funciones.php';
+$bonificacion = getBonifXCofre($cofre);
 ?>
 
 <!doctype html>
@@ -10,7 +10,8 @@ include "funciones.php";
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> Supermercado </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 
 <body>
@@ -34,28 +35,28 @@ include "funciones.php";
                             <img src="img/iconos/detalle/oro.png" alt="Oro" />
                             Oro ($200)
                         </td>
-                        <td> </td>
+                        <td> <?php echo contarOro($cofre) ?></td>
                     </tr>
                     <tr>
                         <td>
                             <img src="img/iconos/detalle/plata.png" alt="Oro" />
                             Plata ($50)
                         </td>
-                        <td> </td>
+                        <td> <?php echo contarPlata($cofre) ?> </td>
                     </tr>
                     <tr>
                         <td>
                             <img src="img/iconos/detalle/bronce.png" alt="Oro" />
                             Bronce ($10)
                         </td>
-                        <td> </td>
+                        <td> <?php echo contarBronce($cofre) ?> </td>
                     </tr>
                     <tr>
                         <td>
                             <img src="img/iconos/detalle/bonif.png" alt="Bonificación" />
                             Bonificación
                         </td>
-                        <td> </td>
+                        <td> <?php echo "$" . getBonifXCofre($cofre) ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -74,22 +75,31 @@ include "funciones.php";
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <img src="img/iconos/categorias/bebidas.png" alt="">
-
-                            111
-                        </td>
-                        <td> Coca Cola 1.5LT </td>
-                        <td> $100,00 </td>
-                        <td> 3 </td>
-                        <td> $300,00 </td>
-                    </tr>
+                    <?php
+                    for ($i = 0; $i < count($productos); $i++) {
+                        echo "<tr>
+        <td>
+            <img style='width: 30px' src='img/iconos/categorias/" . ($productos[$i]['icono'] ?? 'default.png') . "' alt=''>
+            " . getCodigo($productos[$i]) . "
+        </td>
+        <td>" . getProducto($productos[$i]) . "</td>
+        <td>$" . getPrecio($productos[$i]) . "</td>
+        <td>" . getCantidad($productos[$i]) . "</td>
+        <td>$" . getSubtotal($productos[$i]) . "</td>
+    </tr>";
+                    }
+                    ?>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="5">
-                            Total:
+                            <?php
+                            if ($bonificacion > 0) {
+                                echo "<del>Total: $" . getMontoXProductos($productos) . "</del>" . "<p style='color: green'> Total con descuento: $" . getMontoConDescuento($productos, $cofre) . "</p>";
+                            } else {
+                                echo "<p>Total: $" . getMontoXProductos($productos) . "<p>";
+                            }
+                            ?>
                         </td>
                     </tr>
                 </tfoot>
@@ -98,7 +108,9 @@ include "funciones.php";
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
